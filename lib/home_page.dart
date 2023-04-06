@@ -74,13 +74,13 @@ class _Home_pageState extends State<Home_page> {
         for (int i = 0; i < titleList.length; i++)
           Padding(
             padding: const EdgeInsets.only(top: 10),
-            child: card_space(context, titleList[i]),
+            child: card_space(context, titleList[i], i),
           ),
       ],
     );
   }
 
-  Widget card_space(BuildContext context, text) {
+  Widget card_space(BuildContext context, text, itme) {
     return Padding(
       padding: EdgeInsets.only(top: 10),
       child: Container(
@@ -110,7 +110,9 @@ class _Home_pageState extends State<Home_page> {
                     child: Container(
                       width: MediaQuery.of(context).size.width - 10,
                       child: OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          print(titlehrefs[itme]);
+                        },
                         child: Text(
                           'Читать...',
                           style: TextStyle(color: Colors.grey),
@@ -127,18 +129,6 @@ class _Home_pageState extends State<Home_page> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget out_button_in_card(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width - 10,
-      child: OutlinedButton(
-          onPressed: () {},
-          child: const Text(
-            'Читать...',
-            style: TextStyle(color: Colors.black12),
-          )),
     );
   }
 
