@@ -6,6 +6,7 @@ import 'package:web_scraper/web_scraper.dart';
 
 var array_list = [];
 final titleList = <String>[];
+final titlehrefs = <String>[];
 
 class splashScreens extends StatefulWidget {
   const splashScreens({Key? key}) : super(key: key);
@@ -42,7 +43,6 @@ class _splashScreensState extends State<splashScreens>
       if (await webScraper.loadWebPage(endpoint)) {
         final titleElements =
             webScraper.getElement('h2.tm-title > a > span', []);
-
         titleElements.forEach((element) {
           final title = element['title'];
           titleList.add('$title');
@@ -55,16 +55,29 @@ class _splashScreensState extends State<splashScreens>
     }
   }
 
+  void initChaptersTitleScrap2() async {
+    for (int i = 0; i < 51; i++) {
+      final rawUrl =
+          'https://habr.com/ru/search/page$i/?q=мобильная%20разработка%20&target_type=posts&order=relevance';
+      final webScraper = WebScraper('https://habr.com');
+      final endpoint = rawUrl.replaceAll(r'https://habr.com', '');
+      if (await webScraper.loadWebPage(endpoint)) {
+        final titleElements =
+            webScraper.getElement('h2.tm-title > a', ['href']);
+        titleElements.forEach((element) {
+          final title = element['attributes'];
+          final title2 = title['href'];
+          titlehrefs.add('$title2');
+        });
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     initChaptersTitleScrap();
-    // if (titleList.length == 992) {
-    //   Timer(
-    //       Duration(seconds: 1),
-    //       () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-    //           builder: (BuildContext context) => Home_page())));
-    // }
+    initChaptersTitleScrap2();
 
     firstController =
         AnimationController(vsync: this, duration: const Duration(seconds: 6));
