@@ -17,6 +17,28 @@ class _Home_pageState extends State<Home_page> {
         backgroundColor: Colors.white,
         iconTheme: IconThemeData(color: Colors.grey),
       ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 3),
+                        child: Text('Menu'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
       body: widget_main(context),
     );
   }
