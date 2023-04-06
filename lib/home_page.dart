@@ -11,6 +11,32 @@ class Home_page extends StatefulWidget {
 }
 
 class _Home_pageState extends State<Home_page> {
+  var array_numbers = [
+    'Профиль',
+    'Курсы',
+    'Смотрю',
+    'Настройки',
+    'Помощь',
+    'Выход'
+  ];
+  Widget out_buts(BuildContext context, text) {
+    return Container(
+      width: MediaQuery.of(context).size.width - 10,
+      child: OutlinedButton(
+        onPressed: () {},
+        child: Text(
+          '$text',
+          style: TextStyle(color: Colors.grey),
+        ),
+        style: OutlinedButton.styleFrom(
+          side: BorderSide(
+            color: Colors.transparent,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget start_page(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -19,23 +45,21 @@ class _Home_pageState extends State<Home_page> {
       ),
       drawer: Drawer(
         child: ListView(
-          padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: 3),
-                        child: Text('Menu'),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 100,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: [
+                Color.fromARGB(255, 169, 184, 207),
+                Color.fromARGB(255, 197, 214, 240),
+              ])),
+              child: Text(''),
             ),
+            for (int i = 0; i < array_numbers.length; i++)
+              ListTile(
+                title: out_buts(context, array_numbers[i]),
+              ),
           ],
         ),
       ),
@@ -60,7 +84,7 @@ class _Home_pageState extends State<Home_page> {
     return Padding(
       padding: EdgeInsets.only(top: 10),
       child: Container(
-        height: 300,
+        height: 200,
         child: Card(
           child: Container(
             decoration: BoxDecoration(
@@ -83,15 +107,18 @@ class _Home_pageState extends State<Home_page> {
                   ),
                   Align(
                     alignment: Alignment.bottomCenter,
-                    child: OutlinedButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Читать...',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(
-                          color: Colors.transparent,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width - 10,
+                      child: OutlinedButton(
+                        onPressed: () {},
+                        child: Text(
+                          'Читать...',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(
+                            color: Colors.transparent,
+                          ),
                         ),
                       ),
                     ),
