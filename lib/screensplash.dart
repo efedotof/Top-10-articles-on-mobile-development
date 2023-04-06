@@ -2,6 +2,10 @@ import 'dart:math';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:top10stat/home_page.dart';
+import 'package:web_scraper/web_scraper.dart';
+
+var array_list = [];
+final titleList = <String>[];
 
 class splashScreens extends StatefulWidget {
   const splashScreens({Key? key}) : super(key: key);
@@ -27,13 +31,40 @@ class _splashScreensState extends State<splashScreens>
   late AnimationController fifthController;
   late Animation<double> fifthAnimation;
 
+  final webScraper = WebScraper('https://habr.com');
+
+  void initChaptersTitleScrap() async {
+    for (int i = 0; i < 51; i++) {
+      final rawUrl =
+          'https://habr.com/ru/search/page$i/?q=мобильная%20разработка%20&target_type=posts&order=relevance';
+      final webScraper = WebScraper('https://habr.com');
+      final endpoint = rawUrl.replaceAll(r'https://habr.com', '');
+      if (await webScraper.loadWebPage(endpoint)) {
+        final titleElements =
+            webScraper.getElement('h2.tm-title > a > span', []);
+
+        titleElements.forEach((element) {
+          final title = element['title'];
+          titleList.add('$title');
+        });
+      }
+    }
+    if (titleList.length == 992) {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (BuildContext context) => Home_page()));
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    Timer(
-        Duration(seconds: 8),
-        () => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (BuildContext context) => Home_page())));
+    initChaptersTitleScrap();
+    // if (titleList.length == 992) {
+    //   Timer(
+    //       Duration(seconds: 1),
+    //       () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+    //           builder: (BuildContext context) => Home_page())));
+    // }
 
     firstController =
         AnimationController(vsync: this, duration: const Duration(seconds: 6));
