@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:web_scraper/web_scraper.dart';
 import 'package:top10stat/screensplash.dart';
-import 'package:top10stat/array_list.dart';
+import 'package:top10stat/stat_screen.dart';
 
 class Home_page extends StatefulWidget {
   const Home_page({super.key});
@@ -10,15 +10,20 @@ class Home_page extends StatefulWidget {
   State<Home_page> createState() => _Home_pageState();
 }
 
+String nmn = '';
+final textList = <String>[];
+String svr = '';
+
 class _Home_pageState extends State<Home_page> {
   var array_numbers = [
-    'Профиль',
-    'Курсы',
-    'Смотрю',
+    'Прочитанные',
+    'Читаю',
+    'Буду читать',
     'Настройки',
     'Помощь',
     'Выход'
   ];
+
   Widget out_buts(BuildContext context, text) {
     return Container(
       width: MediaQuery.of(context).size.width - 10,
@@ -80,6 +85,21 @@ class _Home_pageState extends State<Home_page> {
     );
   }
 
+  void initChaptersTitleScrap() async {
+    final rawUrl = 'https://habr.com' + '$nmn';
+    final webScraper = WebScraper('https://habr.com');
+    final endpoint = rawUrl.replaceAll(r'https://habr.com', '');
+    if (await webScraper.loadWebPage(endpoint)) {
+      final titleElements =
+          webScraper.getElement('div.article-formatted-body', []);
+      titleElements.forEach((element) {
+        final title = element['title'];
+        textList.add('$title');
+        svr = textList[0];
+      });
+    }
+  }
+
   Widget card_space(BuildContext context, text, itme) {
     return Padding(
       padding: EdgeInsets.only(top: 10),
@@ -111,7 +131,13 @@ class _Home_pageState extends State<Home_page> {
                       width: MediaQuery.of(context).size.width - 10,
                       child: OutlinedButton(
                         onPressed: () {
-                          print(titlehrefs[itme]);
+                          nmn = titlehrefs[itme];
+                          initChaptersTitleScrap();
+
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => StatScreen()));
                         },
                         child: Text(
                           'Читать...',
